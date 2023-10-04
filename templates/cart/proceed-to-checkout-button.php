@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="cart-final-btm">
     <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', get_permalink( get_option( 'woocommerce_shop_page_id' ) ) ) ); ?>"
-       class="btn-shop"><?php esc_html_e( 'Back to Shopping', 'martfury' ); ?>
+       class="btn-shop"><?php esc_html_e( 'Back to Shopping', 'custom-woocommerce-modifications' ); ?>
     </a>
     <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="checkout-button button alt wc-forward<?php echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); ?>">
     	<?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>

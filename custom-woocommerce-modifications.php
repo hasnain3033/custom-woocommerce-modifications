@@ -26,7 +26,7 @@ add_action('admin_init', 'custom_check_woocommerce');
 function custom_woocommerce_missing_notice()
 {
     echo '<div class="error"><p>';
-    echo __('Woocommerce Modifications is enabled but not effective. It requires WooCommerce in order to work.', 'your-text-domain');
+    echo __('Woocommerce Modifications is enabled but not effective. It requires WooCommerce in order to work.', 'custom-woocommerce-modifications');
     echo '</p></div>';
 }
 

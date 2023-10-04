@@ -25,33 +25,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php do_action( 'woocommerce_before_cart_totals' ); ?>
 
-	<h2><?php _e( 'Cart totals', 'martfury' ); ?></h2>
+	<h2><?php _e( 'Cart totals', 'custom-woocommerce-modifications' ); ?></h2>
 
 	<table cellspacing="0" class="shop_table shop_table_responsive">
 
 		<tr class="cart-base-subtotal">
-			<th><?php _e( 'Base Price', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Base Price', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_regular_price()); ?></td>
+			<th><?php _e( 'Base Price', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Base Price', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_regular_price()); ?></td>
 		</tr>
 		<tr class="cart-duties">
-			<th><?php _e( 'Duties', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Duties', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_duties_values()); ?></td>
+			<th><?php _e( 'Duties', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Duties', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_duties_values()); ?></td>
 		</tr>
 		<tr class="cart-admin">
-			<th><?php _e( 'Admin Fee', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Admin Fee', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_admin_values()); ?></td>
+			<th><?php _e( 'Admin Fee', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Admin Fee', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_admin_values()); ?></td>
 		</tr>
 		<tr class="cart-pkg">
-			<th><?php _e( 'Packaging Fee', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Packaging Fee', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_pkg_values()); ?></td>
+			<th><?php _e( 'Packaging Fee', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Packaging Fee', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_pkg_values()); ?></td>
 		</tr>
 		<tr class="cart-subtotal">
-			<th><?php _e( 'Subtotal', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Subtotal', 'martfury' ); ?>"><?php wc_cart_totals_subtotal_html(); ?></td>
+			<th><?php _e( 'Subtotal', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Subtotal', 'custom-woocommerce-modifications' ); ?>"><?php wc_cart_totals_subtotal_html(); ?></td>
 		</tr>
 		<tr class="cart-shipping-expenses">
 			<th><strong>Shipping Expenses</strong></th>
-			<td data-title="<?php esc_attr_e( 'Shipping Expenses', 'martfury' ); ?>">
+			<td data-title="<?php esc_attr_e( 'Shipping Expenses', 'custom-woocommerce-modifications' ); ?>">
 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
 					<path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393  c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393  s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
 				</svg>
@@ -84,7 +84,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( wc_tax_enabled() && ! WC()->cart->display_prices_including_tax() ) :
 			$taxable_address = WC()->customer->get_taxable_address();
 			$estimated_text  = WC()->customer->is_customer_outside_base() && ! WC()->customer->has_calculated_shipping()
-					? sprintf( ' <small>' . __( '(estimated for %s)', 'martfury' ) . '</small>', WC()->countries->estimated_for_prefix( $taxable_address[0] ) . WC()->countries->countries[ $taxable_address[0] ] )
+					? sprintf( ' <small>' . __( '(estimated for %s)', 'custom-woocommerce-modifications' ) . '</small>', WC()->countries->estimated_for_prefix( $taxable_address[0] ) . WC()->countries->countries[ $taxable_address[0] ] )
 					: '';
 
 			if ( 'itemized' === get_option( 'woocommerce_tax_total_display' ) ) : ?>
@@ -105,12 +105,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php do_action( 'woocommerce_cart_totals_before_order_total' ); ?>
 
 		<tr class="order-total-kyd">
-			<th><?php _e( 'Total in KYD', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Total in KYD', 'martfury' ); ?>"><?php echo wc_price(get_cart_total_value()); ?></td>
+			<th><?php _e( 'Total in KYD', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Total in KYD', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(get_cart_total_value()); ?></td>
 		</tr>
 		<tr class="order-total">
-			<th><?php _e( 'Total', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Total in KYD', 'martfury' ); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
+			<th><?php _e( 'Total', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Total in KYD', 'custom-woocommerce-modifications' ); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
 		</tr>
 
 		<?php do_action( 'woocommerce_cart_totals_after_order_total' ); ?>

@@ -27,10 +27,10 @@ do_action( 'woocommerce_before_cart' ); ?>
         <thead>
         <tr>
             <!--<th class="product-thumbnail">&nbsp;</th>-->
-            <th class="product-name"><?php esc_html_e( 'Product', 'martfury' ); ?></th>
-            <th class="product-price"><?php esc_html_e( 'Price', 'martfury' ); ?></th>
-            <th class="product-quantity"><?php esc_html_e( 'Quantity', 'martfury' ); ?></th>
-            <!-- <th class="product-subtotal" ><?php //esc_html_e( 'Product Total', 'martfury' ); ?><span class="tooltip-trigger">?
+            <th class="product-name"><?php esc_html_e( 'Product', 'custom-woocommerce-modifications' ); ?></th>
+            <th class="product-price"><?php esc_html_e( 'Price', 'custom-woocommerce-modifications' ); ?></th>
+            <th class="product-quantity"><?php esc_html_e( 'Quantity', 'custom-woocommerce-modifications' ); ?></th>
+            <!-- <th class="product-subtotal" ><?php //esc_html_e( 'Product Total', 'custom-woocommerce-modifications' ); ?><span class="tooltip-trigger">?
 			<div class="custom-tooltip">
 				This is total with duties and etc.
 			</div>
@@ -77,7 +77,7 @@ do_action( 'woocommerce_before_cart' ); ?>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9193 16.9194C16.5125 17.3262 15.853 17.3262 15.4462 16.9194L8.0805 9.55375C7.67369 9.14694 7.67369 8.4874 8.0805 8.08061C8.48729 7.67381 9.14683 7.67381 9.55362 8.08061L16.9193 15.4463C17.3261 15.8531 17.3261 16.5126 16.9193 16.9194Z" fill="#1B1B1B"/>
 </svg></a>',
 							esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
-							esc_html__( 'Remove', 'martfury' ),
+							esc_html__( 'Remove', 'custom-woocommerce-modifications' ),
 							esc_attr( $product_id ),
 							esc_attr( $_product->get_sku() )
 						), $cart_item_key
@@ -85,7 +85,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 						?>
                     </td>
 
-<td class="product-name" data-title="<?php esc_attr_e( 'Product', 'martfury' ); ?>">
+<td class="product-name" data-title="<?php esc_attr_e( 'Product', 'custom-woocommerce-modifications' ); ?>">
     <?php
     if ( ! $product_permalink ) {
         /**
@@ -118,13 +118,13 @@ do_action( 'woocommerce_before_cart' ); ?>
 
     // Backorder notification.
     if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {
-        echo wp_kses_post( apply_filters( 'woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'martfury' ) . '</p>', $product_id ) );
+        echo wp_kses_post( apply_filters( 'woocommerce_cart_item_backorder_notification', '<p class="backorder_notification">' . esc_html__( 'Available on backorder', 'custom-woocommerce-modifications' ) . '</p>', $product_id ) );
     }
     ?>
 </td>
 
 
-                    <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'martfury' ); ?>">
+                    <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'custom-woocommerce-modifications' ); ?>">
                         <?php
                             $regular_price = get_post_meta($product_id, '_regular_price', true);
                         ?>
@@ -159,7 +159,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
                     </td>
 
-                    <!-- <td class="product-subtotal" data-title="<?php esc_attr_e( 'Total', 'martfury' ); ?>">
+                    <!-- <td class="product-subtotal" data-title="<?php esc_attr_e( 'Total', 'custom-woocommerce-modifications' ); ?>">
 						<?php
 						//echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
 						?>
@@ -174,7 +174,7 @@ do_action( 'woocommerce_before_cart' ); ?>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9193 16.9194C16.5125 17.3262 15.853 17.3262 15.4462 16.9194L8.0805 9.55375C7.67369 9.14694 7.67369 8.4874 8.0805 8.08061C8.48729 7.67381 9.14683 7.67381 9.55362 8.08061L16.9193 15.4463C17.3261 15.8531 17.3261 16.5126 16.9193 16.9194Z" fill="#1B1B1B"/>
 </svg></a>',
 							esc_url( wc_get_cart_remove_url( $cart_item_key ) ),
-							esc_html__( 'Remove', 'martfury' ),
+							esc_html__( 'Remove', 'custom-woocommerce-modifications' ),
 							esc_attr( $product_id ),
 							esc_attr( $_product->get_sku() )
 						), $cart_item_key
@@ -234,11 +234,11 @@ do_action( 'woocommerce_before_cart' ); ?>
         <div class="row">
             <div class="col-md-4 col-sm-12 col-coupon">
                 <div class="coupon">
-                    <label for="coupon_code"><?php esc_html_e( 'Coupon Discount', 'martfury' ); ?></label>
+                    <label for="coupon_code"><?php esc_html_e( 'Coupon Discount', 'custom-woocommerce-modifications' ); ?></label>
                     <input type="text" name="coupon_code" class="input-text" id="coupon_code" value=""
-                           placeholder="<?php esc_attr_e( 'Coupon code', 'martfury' ); ?>"/>
+                           placeholder="<?php esc_attr_e( 'Coupon code', 'custom-woocommerce-modifications' ); ?>"/>
                     <input type="submit" class="button" name="apply_coupon"
-                           value="<?php esc_attr_e( 'Apply', 'martfury' ); ?>"/>
+                           value="<?php esc_attr_e( 'Apply', 'custom-woocommerce-modifications' ); ?>"/>
 					<?php do_action( 'woocommerce_cart_coupon' ); ?>
                 </div>
             </div>

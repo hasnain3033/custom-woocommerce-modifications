@@ -57,20 +57,20 @@ defined( 'ABSPATH' ) || exit;
 	</tbody>
 	<tfoot>
 		<tr class="cart-base-subtotal">
-			<th><?php _e( 'Base Price', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Base Price', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_regular_price()); ?></td>
+			<th><?php _e( 'Base Price', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Base Price', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_regular_price()); ?></td>
 		</tr>
 		<tr class="cart-duties">
-			<th><?php _e( 'Duties', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Duties', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_duties_values()); ?></td>
+			<th><?php _e( 'Duties', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Duties', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_duties_values()); ?></td>
 		</tr>
 				<tr class="cart-admin">
-			<th><?php _e( 'Admin Fee', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Admin Fee', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_admin_values()); ?></td>
+			<th><?php _e( 'Admin Fee', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Admin Fee', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_admin_values()); ?></td>
 		</tr>
 		<tr class="cart-pkg">
-			<th><?php _e( 'Packaging Fee', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Packaging Fee', 'martfury' ); ?>"><?php echo wc_price(calculate_cart_pkg_values()); ?></td>
+			<th><?php _e( 'Packaging Fee', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Packaging Fee', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(calculate_cart_pkg_values()); ?></td>
 		</tr>
 		<tr class="cart-subtotal">
 			<th>Subtotal</th>
@@ -127,13 +127,13 @@ defined( 'ABSPATH' ) || exit;
 
 		<?php do_action( 'woocommerce_review_order_before_order_total' ); ?>
 		<tr class="order-total-kyd">
-			<th><?php _e( 'Total in KYD', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Total in KYD', 'martfury' ); ?>"><?php echo wc_price(get_cart_total_value()); ?></td>
+			<th><?php _e( 'Total in KYD', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Total in KYD', 'custom-woocommerce-modifications' ); ?>"><?php echo wc_price(get_cart_total_value()); ?></td>
 		</tr>
 
 		<tr class="order-total">
-			<th><?php _e( 'Total', 'martfury' ); ?></th>
-			<td data-title="<?php esc_attr_e( 'Total', 'martfury' ); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
+			<th><?php _e( 'Total', 'custom-woocommerce-modifications' ); ?></th>
+			<td data-title="<?php esc_attr_e( 'Total', 'custom-woocommerce-modifications' ); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
 		</tr>
 
 		<?php do_action( 'woocommerce_review_order_after_order_total' ); ?>
