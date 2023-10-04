@@ -1,0 +1,65 @@
+/* Styles for the tooltip trigger element */
+.tooltip-trigger {
+    position: relative; /* Make sure the parent element has relative positioning */
+    cursor: pointer; /* Show the cursor as a pointer when hovering over the element */
+}
+
+/* Styles for the tooltip content */
+.custom-tooltip {
+    position: absolute; 
+    top: -30px;
+    left: 50%; 
+    transform: translateX(-50%); 
+    background-color: #333; 
+    color: #fff; 
+    padding: 5px 10px;
+    border-radius: 3px; 
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out; 
+    width: max-content;
+}
+
+/* Show the tooltip on hover */
+.tooltip-trigger:hover .custom-tooltip {
+    opacity: 1;
+}
+.woocommerce form .form-row select {
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    height: auto;
+    border-radius: 0;
+    line-height: 2em;
+    min-height: 50px;
+    background-color: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    -webkit-user-select: none;
+    margin: 0 0 -4px;
+    width: 100%;
+}
+.woocommerce form .form-row label[for="billing_country"] + .woocommerce-input-wrapper {
+    display: block;
+    line-height: 2em;
+    min-height: 50px;
+    border: 1px solid #ccc;
+    padding: 10px 16px;
+    background-color: #fff;
+    margin: 0 0 -4px;
+}
+.fee {
+    display: none;
+}
+.cart-shipping-expenses {
+    cursor: pointer;
+}
+tr.cart-shipping-expenses th strong {
+    color: #000;
+}
+.cart-shipping-expenses svg {
+    transition: all 0.5s ease-in-out;
+}
+.cart-shipping-expenses.active svg {
+    transform: rotate(180deg);
+    transition: all 0.5s ease-in-out;
+}
