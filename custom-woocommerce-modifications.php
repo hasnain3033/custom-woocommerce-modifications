@@ -4,6 +4,7 @@ Plugin Name: Custom WooCommerce Modifications
 Description: Calculator for Air Frieght, Insurance, etc and also Custom cart and checkout tempplates. Including a custom product title widget for elementor with character limit option
 Version: 2.0
 Author: Hasnain Qureshi
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: custom-woocommerce-modifications
 */
 
