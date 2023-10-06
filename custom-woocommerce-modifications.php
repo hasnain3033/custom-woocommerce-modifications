@@ -41,6 +41,9 @@ function register_custom_elementor_widgets() {
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
 
+// Include the bulk price adjustment features 
+include_once(plugin_dir_pathI(__FILE__) . 'bulk-price-adjustment.php');
+
 
 // Add your custom code below this line
 
