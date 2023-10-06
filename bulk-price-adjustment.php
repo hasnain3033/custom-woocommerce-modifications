@@ -73,3 +73,5 @@ function save_bulk_price_adjustment($product_ids) {
         }
     }
 }
+// Save the bulk price adjustment when saving products
+add_action('woocommerce_product_bulk_edit_save', 'save_bulk_price_adjustment');
