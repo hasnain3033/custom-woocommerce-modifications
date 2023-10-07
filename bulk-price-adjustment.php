@@ -29,6 +29,7 @@ function add_percentage_in_final_product_price($price, $product) {
     if($manual_adjustment !== '') {
         // Calculate the new price considering both default and manual adjustments
         $price = $price + ($price * ($manual_adjustment / 100));
+        return $price;
     }
 
     return $price;
