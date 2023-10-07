@@ -21,7 +21,7 @@ function save_manual_price_adjustment_field($product_id) {
 }
 add_action('woocommerce_process_product_meta', 'save_manual_price_adjustment_field');
 
-function calculate_final_product_price($price, $product) {
+function add_percentage_in_final_product_price($price, $product) {
 
     // Get manual adjustment from the product
     $manual_adjustment = get_post_meta($product->get_id(), '_manual_price_adjustment', true);
@@ -34,8 +34,8 @@ function calculate_final_product_price($price, $product) {
     return $price;
 
 }
-add_filter('woocommerce_product_get_price', 'calculate_final_product_price', 10, 2);
-add_filter('woocommerce_product_get_regular_price', 'calculate_final_product_price', 10, 2);
+add_filter('woocommerce_product_get_price', 'add_percentage_in_final_product_price', 10, 2);
+add_filter('woocommerce_product_get_regular_price', 'add_percentage_in_final_product_price', 10, 2);
 
 function add_bulk_price_adjustment_interface() {
     ?>
