@@ -34,31 +34,16 @@ function add_bulk_price_adjustment_interface() {
 }
 
 // Hook to add a custom bulk price adjustment interface in the admin
-add_action('woocommerce_product_bulk_edit_end', 'add_bulk_price_adjustment_interface');
+add_action('woocommerce_product_bulk_edit_start', 'add_bulk_price_adjustment_interface');
 
-// function save_bulk_price_adjustment($product) {
-//     error_log('Products edited in bulk: ' . implode(', ', $product));
-//     if(isset($_REQUEST['_manual_price_adjustment'])) {
-//         $bulk_adjustment = wc_clean($_REQUEST['_manual_price_adjustment']);
-//         foreach($product_ids as $product_id) {
-//             update_post_meta($product_id, '_manual_price_adjustment', $bulk_adjustment);
-//         }
-//     }
-// }
+function save_bulk_price_adjustment($product) {
+    $product_id = method_exists( $product, 'get_id' ) ? $product->get_id() : $product->id;
 
-// // Save the bulk price adjustment when saving products
-// add_action('woocommerce_product_bulk_edit_save', 'save_bulk_price_adjustment');
-
-
-add_action('woocommerce_before_bulk_object_save', 'custom_before_bulk_save_action');
-
-function custom_before_bulk_save_action($bulk_object_data) {
-    error_log('Bulk edit data: ' . print_r($bulk_object_data, true));
-    
-    if (!empty($bulk_object_data) && is_array($bulk_object_data)) {
-        $product_ids = array_column($bulk_object_data, 'ID');
-
-        // Log product IDs to the error log
-        error_log('Product IDs: ' . implode(', ', $product_ids));
+    if(isset($_REQUEST['_manual_price_adjustment'])) {
+        $bulk_adjustment = wc_clean($_REQUEST['_manual_price_adjustment']);
+        update_post_meta($product_id, '_manual_price_adjustment', $bulk_adjustment);
     }
 }
+
+// // Save the bulk price adjustment when saving products
+add_action('woocommerce_product_bulk_edit_save', 'save_bulk_price_adjustment');
