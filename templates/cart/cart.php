@@ -26,7 +26,7 @@ do_action( 'woocommerce_before_cart' ); ?>
     <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
         <thead>
         <tr>
-            <!--<th class="product-thumbnail">&nbsp;</th>-->
+            <!-- <th class="product-thumbnail">&nbsp;</th> -->
             <th class="product-name"><?php esc_html_e( 'Product', 'custom-woocommerce-modifications' ); ?></th>
             <th class="product-price"><?php esc_html_e( 'Price', 'custom-woocommerce-modifications' ); ?></th>
             <th class="product-quantity"><?php esc_html_e( 'Quantity', 'custom-woocommerce-modifications' ); ?></th>
@@ -127,9 +127,27 @@ do_action( 'woocommerce_before_cart' ); ?>
                     <td class="product-price" data-title="<?php esc_attr_e( 'Price', 'custom-woocommerce-modifications' ); ?>">
                         <?php
                             $regular_price = get_post_meta($product_id, '_regular_price', true);
+                            $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
+                            $sale_price = get_post_meta($product_id, '_sale_price', true);
+                            $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
+                    
+                            // Set the initial product price to regular price
+                            $product_price = $regular_price;
+                    
+                            // Check if the product is on sale and the sale price is lower than the regular price
+                            if ($sale_price && $sale_price < $regular_price) {
+                                $product_price = $sale_price;
+                            }
+                    
+                            if($manual_adjustment !== '') {
+                                // Calculate the new price considering both default and manual adjustments
+                                $manual_adjustment_value = ($product_price * ($manual_adjustment / 100));
+                                $product_price += $manual_adjustment_value;
+                                
+                            }
                         ?>
 						<?php
-						echo apply_filters( 'woocommerce_cart_item_price', wc_price($regular_price), $cart_item, $cart_item_key );
+						echo apply_filters( 'woocommerce_cart_item_price', wc_price($product_price), $cart_item, $cart_item_key );
 						// echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
 						?>
                     </td>

@@ -41,10 +41,6 @@ function register_custom_elementor_widgets() {
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
 
-// Include the bulk price adjustment features 
-include_once(plugin_dir_path(__FILE__) . 'bulk-price-adjustment.php');
-
-
 // Add your custom code below this line
 
 function custom_enqueue_scripts()
@@ -87,11 +83,15 @@ function get_custom_handling_fee()
 
 function calculate_final_product_price($regular_price, $product_id)
 {
+
+    $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
+    $price_updated = $regular_price + ($regular_price * ($manual_adjustment / 100));
+
     // Step 1: Calculate admin fee (10% of regular price)
-    $admin_fee = 0.1 * $regular_price;
+    $admin_fee = 0.1 * $price_updated;
 
     // Step 8: Calculate final product price (sum of all components)
-    $final_cif_price = $regular_price + $admin_fee;
+    $final_cif_price = $price_updated + $admin_fee;
 
     $product_price_term = get_the_terms($product_id, 'product_cat');
     $product_price_terms_id = $product_price_term[0];
@@ -99,10 +99,10 @@ function calculate_final_product_price($regular_price, $product_id)
     $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
 
 
-    $duties_totalt_val = $final_cif_price * $duties_percentage_value / 100;
+    $duties_totalt_val = $final_cif_price * ($duties_percentage_value / 100);
 
     $pkg_fees = 7.32;
-    $final_product_price = $duties_totalt_val + $regular_price + $admin_fee + $pkg_fees;
+    $final_product_price = $duties_totalt_val + $price_updated + $admin_fee + $pkg_fees;
 
     return $final_product_price;
 }
@@ -112,19 +112,19 @@ add_filter('woocommerce_product_get_price', 'custom_product_price_calculation', 
 function custom_product_price_calculation($price, $product)
 {
     $product_id = $product->get_id();
-    $regular_price = get_post_meta($product_id, '_regular_price', true);
-    $sale_price = get_post_meta($product_id, '_sale_price', true);
+    // $regular_price = get_post_meta($product_id, '_regular_price', true);
+    // $sale_price = get_post_meta($product_id, '_sale_price', true);
 
-    // Set the initial product price to regular price
-    $product_price = $regular_price;
+    // // Set the initial product price to regular price
+    // $product_price = $regular_price;
 
-    // Check if the product is on sale and the sale price is lower than the regular price
-    if ($sale_price && $sale_price < $regular_price) {
-        $product_price = $sale_price;
-    }
+    // // Check if the product is on sale and the sale price is lower than the regular price
+    // if ($sale_price && $sale_price < $regular_price) {
+    //     $product_price = $sale_price;
+    // }
 
     // Calculate the custom product price
-    $custom_price = calculate_final_product_price($product_price, $product_id);
+    $custom_price = calculate_final_product_price($price, $product_id);
 
     return $custom_price;
 }
@@ -389,8 +389,8 @@ function calculate_cart_regular_price()
 
         // Get the regular price of the current product
         $regular_price = get_post_meta($product_id, '_regular_price', true);
-        $regular_price = get_post_meta($product_id, '_regular_price', true);
         $sale_price = get_post_meta($product_id, '_sale_price', true);
+        $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
 
         // Set the initial product price to regular price
         $product_price = $regular_price;
@@ -400,8 +400,17 @@ function calculate_cart_regular_price()
             $product_price = $sale_price;
         }
 
-        // Multiply the regular price by the quantity and add to the total
-        $total_regular_price += ($product_price * $quantity);
+        if($manual_adjustment !== '') {
+            // Calculate the new price considering both default and manual adjustments
+            $manual_adjustment_value = ($product_price * ($manual_adjustment / 100));
+            $product_price += $manual_adjustment_value;
+            $total_regular_price += ($product_price * $quantity);
+            
+        } else {            
+            // Multiply the regular price by the quantity and add to the total
+            $total_regular_price += ($product_price * $quantity);
+        }
+
     }
 
     // If there is only one product in the cart, return its regular price
@@ -425,6 +434,7 @@ function calculate_cart_duties_values()
 
         $regular_price = get_post_meta($product_id, '_regular_price', true);
         $sale_price = get_post_meta($product_id, '_sale_price', true);
+        $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
 
         // Set the initial product price to regular price
         $product_price = $regular_price;        
@@ -432,13 +442,18 @@ function calculate_cart_duties_values()
         if ($sale_price && $sale_price < $regular_price) {
             $product_price = $sale_price;
         }
+        if($manual_adjustment !== '') {
+            // Calculate the new price considering both default and manual adjustments
+            $manual_adjustment_value = ($product_price * ($manual_adjustment / 100));
+            $product_price += $manual_adjustment_value;
+        }
 
         $product_price_term = get_the_terms($product_id, 'product_cat');
         $product_price_terms_id = $product_price_term[0];
         $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
         $admin_fee = 0.1 * $product_price;
         $final_cif_price = $product_price + $admin_fee;
-        $duties_totalt_val = $final_cif_price * $duties_percentage_value / 100;
+        $duties_totalt_val = $final_cif_price * ($duties_percentage_value / 100);
 
         // Multiply the regular price by the quantity and add to the total
         $total_duties_price += ($duties_totalt_val * $quantity);
@@ -463,6 +478,7 @@ function calculate_cart_admin_values()
 
         $regular_price = get_post_meta($product_id, '_regular_price', true);
         $sale_price = get_post_meta($product_id, '_sale_price', true);
+        $manual_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
         
         // Set the initial product price to regular price
         $product_price = $regular_price;
@@ -470,6 +486,11 @@ function calculate_cart_admin_values()
         // Check if the product is on sale and the sale price is lower than the regular price
         if ($sale_price && $sale_price < $regular_price) {
             $product_price = $sale_price;
+        }
+        if($manual_adjustment !== '') {
+            // Calculate the new price considering both default and manual adjustments
+            $manual_adjustment_value = ($product_price * ($manual_adjustment / 100));
+            $product_price += $manual_adjustment_value;
         }
 
         $admin_fee = 0.1 * $product_price;
@@ -594,3 +615,6 @@ function get_cart_total_value()
     $new_total = $cart_total + $total_fees * $exchange_rate_usd_to_kyd;
     return $new_total;
 }
+
+// Include the bulk price adjustment features 
+include_once(plugin_dir_path(__FILE__) . 'bulk-price-adjustment.php');
