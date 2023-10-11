@@ -618,3 +618,50 @@ function get_cart_total_value()
 
 // Include the bulk price adjustment features 
 include_once(plugin_dir_path(__FILE__) . 'bulk-price-adjustment.php');
+
+
+function updated_get_product_subtotal($product, $quantity) {
+    $product_id = $product->get_id();
+    $regular_price = get_post_meta($product_id, '_regular_price', true);
+    $sale_price = get_post_meta($product_id, '_sale_price', true);
+
+    // Set the initial product price to regular price
+     $price = $regular_price;
+
+    if ($sale_price && $sale_price < $regular_price) {
+        $price = $sale_price;
+    }
+
+    // Retrieve the manual price adjustment from the product's custom field
+    $manual_price_adjustment = get_post_meta($product_id, '_manual_price_adjustment', true);
+
+    if ($manual_price_adjustment !== '') {
+        $manual_price_adjustment = floatval($manual_price_adjustment);
+        $price += ($price * $manual_price_adjustment / 100);
+    }
+
+    if ($product->is_taxable()) {
+        if (wc_tax_enabled()) {
+            $display_prices_including_tax = wc_prices_include_tax();
+            $tax_display_mode = get_option('woocommerce_tax_display_cart');
+
+            if ($display_prices_including_tax) {
+                $row_price = wc_get_price_including_tax($product, array('qty' => $quantity));
+            } else {
+                $row_price = wc_get_price_excluding_tax($product, array('qty' => $quantity));
+            }
+
+            if (($tax_display_mode === 'excl' && $display_prices_including_tax) || ($tax_display_mode === 'incl' && !$display_prices_including_tax)) {
+                $product_subtotal = wc_price($row_price) . ' <small class="tax_label">' . WC()->countries->inc_tax_or_vat() . '</small>';
+            } else {
+                $product_subtotal = wc_price($row_price);
+            }
+        } else {
+            $product_subtotal = wc_price($price * $quantity);
+        }
+    } else {
+        $product_subtotal_updated = wc_price($price * $quantity);
+    }
+
+    return $product_subtotal_updated;
+}

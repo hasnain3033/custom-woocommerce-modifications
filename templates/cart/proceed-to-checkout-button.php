@@ -30,4 +30,3 @@ if ( ! defined( 'ABSPATH' ) ) {
     	<?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?>
     </a>
 </div>
-

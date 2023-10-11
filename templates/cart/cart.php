@@ -30,11 +30,6 @@ do_action( 'woocommerce_before_cart' ); ?>
             <th class="product-name"><?php esc_html_e( 'Product', 'custom-woocommerce-modifications' ); ?></th>
             <th class="product-price"><?php esc_html_e( 'Price', 'custom-woocommerce-modifications' ); ?></th>
             <th class="product-quantity"><?php esc_html_e( 'Quantity', 'custom-woocommerce-modifications' ); ?></th>
-            <!-- <th class="product-subtotal" ><?php //esc_html_e( 'Product Total', 'custom-woocommerce-modifications' ); ?><span class="tooltip-trigger">?
-			<div class="custom-tooltip">
-				This is total with duties and etc.
-			</div>
-			</span></th> -->
             <th class="product-remove">&nbsp;</th>
         </tr>
         </thead>
@@ -176,12 +171,6 @@ do_action( 'woocommerce_before_cart' ); ?>
 						?>
 
                     </td>
-
-                    <!-- <td class="product-subtotal" data-title="<?php esc_attr_e( 'Total', 'custom-woocommerce-modifications' ); ?>">
-						<?php
-						//echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
-						?>
-                    </td> -->
                     <td class="product-remove" >
 						<?php
 						echo apply_filters(
