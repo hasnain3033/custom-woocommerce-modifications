@@ -2,7 +2,7 @@
 /*
 Plugin Name: Custom WooCommerce Modifications
 Description: Calculator for Air Frieght, Insurance, etc and also Custom cart and checkout tempplates. Including a custom product title widget for elementor with character limit option
-Version: 3.0
+Version: 4.0
 Author: Hasnain Qureshi
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: custom-woocommerce-modifications
@@ -618,6 +618,17 @@ function get_cart_total_value()
 
 // Include the bulk price adjustment features 
 include_once(plugin_dir_path(__FILE__) . 'bulk-price-adjustment.php');
+
+// Include the email verification features 
+include_once(plugin_dir_path(__FILE__) . 'email-verification.php');
+
+
+// Include the customer unique address generate feature 
+include_once(plugin_dir_path(__FILE__) . 'customer-address.php');
+
+// Include the shortcodes 
+include_once(plugin_dir_path(__FILE__) . 'templates/sections/header-notice.php');
+
 
 
 function updated_get_product_subtotal($product, $quantity) {
