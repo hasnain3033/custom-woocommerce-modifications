@@ -43,7 +43,7 @@ function handle_email_verification() {
             update_user_meta( $user_id, 'email_verified', true );
 
             // Redirect to a success page or display a success message
-            wp_redirect( home_url( '/email-verified' ) );
+            wp_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
             exit();
         }
     }
