@@ -55,7 +55,7 @@ function change_verification_link( $email_content, $user_id, $user_email ) {
     $verification_token = get_user_meta( $user_id, 'verification_token', true );
     $verification_link = esc_url( add_query_arg( 'token', $verification_token, home_url( '/verify-email' ) ) );
 
-    $email_content = str_replace( 'http://easyshopusa.local/verify-email?token=', $verification_link, $email_content );
+    $email_content = str_replace( 'https://ky.easyshopusa.com/verify-email?token=', $verification_link, $email_content );
 
     return $email_content;
 }
