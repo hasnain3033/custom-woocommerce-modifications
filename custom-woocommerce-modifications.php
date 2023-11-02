@@ -93,8 +93,28 @@ function calculate_final_product_price($regular_price, $product_id)
     // Step 8: Calculate final product price (sum of all components)
     $final_cif_price = $price_updated + $admin_fee;
 
+	$product_price_terms_id = null; // Initialize it to a default value
     $product_price_term = get_the_terms($product_id, 'product_cat');
-    $product_price_terms_id = $product_price_term[0];
+
+	if ($product_price_term && !is_wp_error($product_price_term)) {
+		$top_level_category = null;
+
+		foreach ($product_price_term as $term) {
+			if ($term->parent == 0) {
+				// This is a top-level category
+				$top_level_category = $term;
+				break;
+			}
+		}
+
+		if ($top_level_category) {
+			// Found a top-level category
+			$product_price_terms_id = $top_level_category;
+		} else {
+			// No top-level category found, use any category as the top-level
+			$product_price_terms_id = reset($product_price_terms);
+		}
+	}
 
     $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
 
@@ -448,8 +468,29 @@ function calculate_cart_duties_values()
             $product_price += $manual_adjustment_value;
         }
 
+		$product_price_terms_id = null; // Initialize it to a default value
         $product_price_term = get_the_terms($product_id, 'product_cat');
-        $product_price_terms_id = $product_price_term[0];
+
+		if ($product_price_term && !is_wp_error($product_price_term)) {
+		$top_level_category = null;
+
+		foreach ($product_price_term as $term) {
+			if ($term->parent == 0) {
+				// This is a top-level category
+				$top_level_category = $term;
+				break;
+			}
+		}
+
+		if ($top_level_category) {
+			// Found a top-level category
+			$product_price_terms_id = $top_level_category;
+		} else {
+			// No top-level category found, use any category as the top-level
+			$product_price_terms_id = reset($product_price_terms);
+		}
+	}
+		
         $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
         $admin_fee = 0.1 * $product_price;
         $final_cif_price = $product_price + $admin_fee;
