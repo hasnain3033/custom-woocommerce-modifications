@@ -7,11 +7,11 @@ function three_column_section_shortcode() {
     ?>
     <section class="banner-noctice">
     <div class="container">
-        <div class="column">
+        <div class="column marketplace-column">
             <p>Currently you’re in</p>
-            <h4>Easyshopusa Marketplace</h4>
+            <h4>EasyshopUSA Marketplace</h4>
         </div>
-        <div class="column">
+        <div class="column address-text-cust">
           <?php if (is_user_logged_in()) : 
                     $user = wp_get_current_user();
                     $user_id = get_current_user_id();
@@ -21,17 +21,17 @@ function three_column_section_shortcode() {
                     ?>
                         <p>This is your U.S. address: <strong>1 Aeropost Way, <?php echo $customer_address; ?>, Miami, FL 33206, USA</strong> </p>
                     <?php else : ?>
-                        <p>You can also shop using a U.S. address with <a href="/my-account/"> Easyshopusa Courier</a></p>
+                        <p>You can also shop using a U.S. address with <a href="/my-account/">EasyshopUSA Courier</a></p>
                     <?php endif; 
                 else:
                 ?>
-                <p>You can also shop using a U.S. address with <a href="/my-account/"> Easyshopusa Courier</a></p>
+                <p>You can also shop using a U.S. address with <a href="/my-account/">EasyshopUSA Courier</a></p>
             <?php 
                 endif;
             ?>
         </div>
         <div class="column">
-            <a href="/shop/">Shop Now</a>
+            <a href="/shop/" class="bnner-tp-btn">Shop Now</a>
         </div>
     </div>
     </section>

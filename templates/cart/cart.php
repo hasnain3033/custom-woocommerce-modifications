@@ -236,6 +236,7 @@ do_action( 'woocommerce_before_cart' ); ?>
         <div class="cart-right-img">
             <img src="https://ky.easyshopusa.com/wp-content/uploads/2023/09/Frame-3.png" alt="" />
         </div>
+    <div class="cart-coupon-container">
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 	<?php if ( wc_coupons_enabled() ) { ?>
         <div class="row">
@@ -251,7 +252,10 @@ do_action( 'woocommerce_before_cart' ); ?>
             </div>
         </div>
 	<?php } ?>
-	
+	 <div class="pricing-notice-fluctuate">
+         <p>Hey there! Just a quick heads-up: Prices on our site may go up and down due to market changes. So, keep an eye out for some sweet deals! 😉 Happy shopping!</p>
+     </div>
+     </div>
 	 </div>
 </form>
 

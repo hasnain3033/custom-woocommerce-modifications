@@ -2,7 +2,7 @@
 /*
 Plugin Name: Custom WooCommerce Modifications
 Description: Calculator for Air Frieght, Insurance, etc and also Custom cart and checkout tempplates. Including a custom product title widget for elementor with character limit option
-Version: 4.0
+Version: 5.0
 Author: Hasnain Qureshi
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: custom-woocommerce-modifications
@@ -93,8 +93,28 @@ function calculate_final_product_price($regular_price, $product_id)
     // Step 8: Calculate final product price (sum of all components)
     $final_cif_price = $price_updated + $admin_fee;
 
+	$product_price_terms_id = null; // Initialize it to a default value
     $product_price_term = get_the_terms($product_id, 'product_cat');
-    $product_price_terms_id = $product_price_term[0];
+
+	if ($product_price_term && !is_wp_error($product_price_term)) {
+		$top_level_category = null;
+
+		foreach ($product_price_term as $term) {
+			if ($term->parent == 0) {
+				// This is a top-level category
+				$top_level_category = $term;
+				break;
+			}
+		}
+
+		if ($top_level_category) {
+			// Found a top-level category
+			$product_price_terms_id = $top_level_category;
+		} else {
+			// No top-level category found, use any category as the top-level
+			$product_price_terms_id = reset($product_price_terms);
+		}
+	}
 
     $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
 
@@ -368,6 +388,9 @@ function custom_modify_review_order_template_location($template, $template_name,
     if ($template_name === 'checkout/form-checkout.php') {
         $template = plugin_dir_path(__FILE__) . 'templates/checkout/form-checkout.php';
     }
+    if ($template_name === 'emails/customer-processing-order.php') {
+        $template = plugin_dir_path(__FILE__) . 'templates/emails/customer-processing-order.php';
+    }
     return $template;
 }
 add_filter('woocommerce_locate_template', 'custom_modify_review_order_template_location', 10, 3);
@@ -448,8 +471,29 @@ function calculate_cart_duties_values()
             $product_price += $manual_adjustment_value;
         }
 
+		$product_price_terms_id = null; // Initialize it to a default value
         $product_price_term = get_the_terms($product_id, 'product_cat');
-        $product_price_terms_id = $product_price_term[0];
+
+		if ($product_price_term && !is_wp_error($product_price_term)) {
+		$top_level_category = null;
+
+		foreach ($product_price_term as $term) {
+			if ($term->parent == 0) {
+				// This is a top-level category
+				$top_level_category = $term;
+				break;
+			}
+		}
+
+		if ($top_level_category) {
+			// Found a top-level category
+			$product_price_terms_id = $top_level_category;
+		} else {
+			// No top-level category found, use any category as the top-level
+			$product_price_terms_id = reset($product_price_terms);
+		}
+	}
+		
         $duties_percentage_value = get_field('duties_percentage_value', $product_price_terms_id);
         $admin_fee = 0.1 * $product_price;
         $final_cif_price = $product_price + $admin_fee;
@@ -629,6 +673,13 @@ include_once(plugin_dir_path(__FILE__) . 'customer-address.php');
 // Include the shortcodes 
 include_once(plugin_dir_path(__FILE__) . 'templates/sections/header-notice.php');
 
+// Include the credit-auth-form 
+include_once(plugin_dir_path(__FILE__) . 'credit-auth-form.php');
+
+// Include the credit-auth-form 
+include_once(plugin_dir_path(__FILE__) . 'custom-author-selection.php');
+
+
 
 
 function updated_get_product_subtotal($product, $quantity) {
@@ -676,3 +727,126 @@ function updated_get_product_subtotal($product, $quantity) {
 
     return $product_subtotal_updated;
 }
+
+
+function custom_wc_register_custom_order_statuses() {
+    // Define an array of custom order statuses
+    $custom_statuses = array(
+        'wc-arrived-at-station' => 'Arrived At Station',
+        'wc-assigned-to-awb' => 'Assigned to AWB',
+        'wc-awaiting-invoice' => 'Awaiting invoice or payment',
+        'wc-customs-clearance' => 'Customs Clearance in Process',
+        'wc-gateway-processing' => 'Gateway Inventory - Processing Request',
+        'wc-gateway-release' => 'Gateway Inventory - Release Requested',
+        'wc-in-transit-country' => 'In Transit to Destination Country',
+        'wc-package-abandoned' => 'Package Abandoned',
+        'wc-preparing-shipment' => 'Preparing for shipment',
+        'wc-processing-request' => 'Processing request',
+        'wc-special-handling' => 'Special Handling',
+        'wc-package-dangerous' => 'Package On-Hold – Dangerous Goods',
+        'wc-package-hold-stored' => 'Package On Hold – Stored',
+        'wc-proof-of-delivery' => 'Proof of Delivery',
+    );
+
+    foreach ($custom_statuses as $status => $label) {
+        register_post_status($status, array(
+            'label' => _x($label, 'Order status', 'woocommerce'),
+            'public' => true,
+            'exclude_from_search' => false,
+            'show_in_admin_all_list' => true,
+            'show_in_admin_status_list' => true,
+            'label_count' => _n_noop($label . ' <span class="count">(%s)</span>', $label . ' <span class="count">(%s)</span>', 'woocommerce'),
+        ));
+    }
+}
+add_action('init', 'custom_wc_register_custom_order_statuses');
+
+
+function custom_wc_add_custom_order_statuses_to_dropdown($order_statuses) {
+    
+    $custom_statuses = array(
+        'wc-arrived-at-station' => 'Arrived At Station',
+        'wc-assigned-to-awb' => 'Assigned to AWB',
+        'wc-awaiting-invoice' => 'Awaiting invoice or payment',
+        'wc-customs-clearance' => 'Customs Clearance in Process',
+        'wc-gateway-processing' => 'Gateway Inventory - Processing Request',
+        'wc-gateway-release' => 'Gateway Inventory - Release Requested',
+        'wc-in-transit-country' => 'In Transit to Destination Country',
+        'wc-package-abandoned' => 'Package Abandoned',
+        'wc-preparing-shipment' => 'Preparing for shipment',
+        'wc-processing-request' => 'Processing request',
+        'wc-special-handling' => 'Special Handling',
+        'wc-package-dangerous' => 'Package On-Hold – Dangerous Goods',
+        'wc-package-hold-stored' => 'Package On Hold – Stored',
+        'wc-proof-of-delivery' => 'Proof of Delivery',
+    );
+
+    foreach ($custom_statuses as $status => $label) {
+        $order_statuses[$status] = _x($label, 'Order status', 'woocommerce');
+    }
+
+    return $order_statuses;
+}
+add_filter('wc_order_statuses', 'custom_wc_add_custom_order_statuses_to_dropdown');
+
+
+function custom_update_order_status($order_id) {
+    $target_product_id = 26150; // Replace with the actual product ID of "Shipping with EasyShopUSA"
+    $new_status = 'wc-awaiting-invoice'; // The desired new order status
+
+    // Get the order object
+    $order = wc_get_order($order_id);
+
+    // Check if the order contains the specified product
+    $contains_target_product = false;
+    foreach ($order->get_items() as $item) {
+        if ($item->get_product_id() === $target_product_id) {
+            $contains_target_product = true;
+            break;
+        }
+    }
+
+    // If the order contains the specified product, update the status
+    if ($contains_target_product) {
+        $order->update_status($new_status);
+    }
+}
+add_action('woocommerce_thankyou', 'custom_update_order_status');
+
+
+// Add "Authorization Forms" Tab to My Account
+function add_authorization_forms_endpoints() {
+    add_rewrite_endpoint('authorization-forms', EP_PAGES);
+    add_rewrite_endpoint('upload-authorization-form', EP_PAGES);
+}
+
+add_action('init', 'add_authorization_forms_endpoints');
+
+// Add "Authorization Forms" Tab to My Account
+function add_authorization_forms_tab($menu_items) {
+    $menu_items['authorization-forms'] = 'Authorization Forms';
+    return $menu_items;
+}
+
+add_filter('woocommerce_account_menu_items', 'add_authorization_forms_tab');
+
+
+// Display content on "Authorization Forms" tab
+function authorization_forms_content() {
+    // Load the template part
+    if ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/my-account-tab/authorization-forms.php' ) ) {
+        include( plugin_dir_path( __FILE__ ) . 'templates/my-account-tab/authorization-forms.php' );
+    }
+}
+
+add_action('woocommerce_account_authorization-forms_endpoint', 'authorization_forms_content');
+
+// Display content on "Authorization Forms" tab
+function authorization_upload_content() {
+    // Load the template part
+    if ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/my-account-tab/auth-upload-form.php' ) ) {
+        include( plugin_dir_path( __FILE__ ) . 'templates/my-account-tab/auth-upload-form.php' );
+    }
+}
+
+add_action('woocommerce_account_upload-authorization-form_endpoint', 'authorization_upload_content');

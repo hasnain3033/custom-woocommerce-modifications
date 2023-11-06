@@ -53,6 +53,9 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	<div id="order_review" class="woocommerce-checkout-review-order">
 	    <h3 id="order_review_heading"><?php esc_html_e( 'Your order', 'woocommerce' ); ?></h3>
 		<?php do_action( 'woocommerce_checkout_order_review' ); ?>
+    	<div class="pricing-notice-fluctuate">
+             <p>Hey there! Just a quick heads-up: Prices on our site may go up and down due to market changes. So, keep an eye out for some sweet deals! 😉 Happy shopping!</p>
+         </div>
 	</div>
 
 	<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
